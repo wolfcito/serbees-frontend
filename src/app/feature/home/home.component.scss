@@ -41,3 +41,13 @@
   .mat-fab.mat-primary {
     border-radius: 5px;
   }
+
+  .login-box{
+    display: flex;
+    flex-direction: row;
+    margin: 15px;
+  }
+
+  .width-20 {
+    min-width: 20px;
+  }
