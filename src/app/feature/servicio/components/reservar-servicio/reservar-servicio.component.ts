@@ -4,39 +4,8 @@ import { PreReservaServicio } from '@servicio/shared/model/pre-reserva-servicio'
 import { ServicioService } from '@servicio/shared/service/servicio.service';
 import Swal from 'sweetalert2';
 
-// interface Country {
-//   name: string;
-//   flag: string;
-//   area: number;
-//   population: number;
-// }
-
-// const COUNTRIES: Country[] = [
-//   {
-//     name: 'Russia',
-//     flag: 'f/f3/Flag_of_Russia.svg',
-//     area: 17075200,
-//     population: 146989754
-//   },
-//   {
-//     name: 'Canada',
-//     flag: 'c/cf/Flag_of_Canada.svg',
-//     area: 9976140,
-//     population: 36624199
-//   },
-//   {
-//     name: 'United States',
-//     flag: 'a/a4/Flag_of_the_United_States.svg',
-//     area: 9629091,
-//     population: 324459463
-//   },
-//   {
-//     name: 'China',
-//     flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-//     area: 9596960,
-//     population: 1409517397
-//   }
-// ];
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -60,17 +29,20 @@ export class ReservarServicioComponent implements OnInit {
   costoTipo: string = "";
 
   miIdCliente: number = 1;
+  closeResult = null;
 
-  constructor(protected servicioService: ServicioService) { }
+  miServicioSeleccionado: PreReservaServicio
+
+  constructor(protected servicioService: ServicioService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.obtenerServiciosDisponibles();
   }
 
   reservar(servicioSeleccionado: PreReservaServicio) {
-    this.construirFormularioServicio(servicioSeleccionado);
     this.calcularCosto();
-    console.log(">>>", this.servicioForm.value)
+    this.construirFormularioServicio(servicioSeleccionado);
+    // console.log(">>>", this.servicioForm.value)
     if (this.servicioForm.invalid) {
       Swal.fire({
         icon: 'error',
@@ -81,7 +53,9 @@ export class ReservarServicioComponent implements OnInit {
       this.servicioForm.markAllAsTouched();
     } else {
       this.servicioService.reservar(this.servicioForm.value).subscribe(data => {
-        console.log(data)
+        if (environment.production) {
+          console.log(data)
+        }
         this.obtenerServiciosDisponibles();
         Swal.fire({
           icon: 'success',
@@ -110,7 +84,7 @@ export class ReservarServicioComponent implements OnInit {
       })
     } else {
       this.servicioForm = new FormGroup({
-        idReserva: new FormControl(servicioSeleccionado.idReserva, [Validators.required]),
+        id: new FormControl(servicioSeleccionado.idReserva, [Validators.required]),
         idUsuarioCli: new FormControl(this.miIdCliente, [Validators.required]),
         modalidad: new FormControl(this.unaModalidad, [Validators.required]),
         cantidad: new FormControl(this.cantidad, [Validators.required]),
@@ -120,7 +94,7 @@ export class ReservarServicioComponent implements OnInit {
       });
     }
 
-    
+
 
   }
 
@@ -134,14 +108,37 @@ export class ReservarServicioComponent implements OnInit {
     return this.unaModalidad === 'PH' ? 'HORAS' : this.unaModalidad === 'PD' ? 'DIAS' : 'SEMANAS';
   }
 
-  calcularCosto(){
-    console.log(this.costoTipo)
-    console.log(this.cantidad)
-    console.log(this.costo)
+  calcularCosto() {
+    // console.log(this.costoTipo)
+    // console.log(this.cantidad)
+    // console.log(this.costo)
     let valores: string[] = this.costoTipo.split('-');
-    console.log(valores)
+    // console.log(valores)
     this.costo = Number(valores[0]);
     this.unaModalidad = valores[1];
   }
+
+
+  open(content) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then((result) => {
+
+        this.reservar(result);
+
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
 
 }

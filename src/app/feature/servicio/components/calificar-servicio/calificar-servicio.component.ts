@@ -7,6 +7,7 @@ import { ServicioService } from '@servicio/shared/service/servicio.service';
 import Swal from 'sweetalert2';
 
 import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-calificar-servicio',
@@ -27,8 +28,9 @@ export class CalificarServicioComponent implements OnInit {
 
   calificaionServicio: CalificaServicio
 
-  constructor(protected servicioService: ServicioService,
-    config: NgbRatingConfig,
+  constructor(
+    protected servicioService: ServicioService,
+    config: NgbRatingConfig, 
     private modalService: NgbModal) {
 
     config.max = 3;
@@ -41,7 +43,9 @@ export class CalificarServicioComponent implements OnInit {
   calificar(calificaionServicio: CalificaServicio) {
 
     this.servicioService.calificar(calificaionServicio).subscribe(data => {
-      console.log("respuesta", data)
+      if (environment.production) {
+        console.log("respuesta", data)
+      }
       this.obtenerServiciosReservados(this.miIdCliente);
       Swal.fire({
         icon: 'success',
@@ -69,13 +73,13 @@ export class CalificarServicioComponent implements OnInit {
   open(content) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then((result) => {
-        console.log("close ", result)
+        // console.log("close ", result)
         this.calificaionServicio = {
           id: result.idReserva,
           nivelSatisfacion: this.obtenerValorSatisfacion(),
           estado: this.estado
         }
-        console.log("final ", this.calificaionServicio)
+        // console.log("final ", this.calificaionServicio)
         this.calificar(this.calificaionServicio);
 
       }, (reason) => {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Categoria } from '@servicio/shared/model/categorias';
 import { ServicioService } from '@servicio/shared/service/servicio.service';
+import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,10 +14,10 @@ export class RegistrarServicioComponent implements OnInit {
 
   servicioForm: FormGroup;
   categorias: Categoria[] = [];
-  private miIdProveedor: number = 1;  
+  private miIdProveedor: number = 1;
   status: 'Cargando...' | 'Error' | 'Exitoso' | 'Inicial' = 'Inicial';
   valorInvalido: string = 'El item seleccionado es invalido';
-  
+
   constructor(protected servicioService: ServicioService) { }
 
   ngOnInit(): void {
@@ -31,16 +32,18 @@ export class RegistrarServicioComponent implements OnInit {
     });
   }
 
-  registrar() {   
-    if(this.servicioForm.invalid){
+  registrar() {
+    if (this.servicioForm.invalid) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: this.valorInvalido,
       })
-    } else{
+    } else {
       this.servicioService.registrar(this.servicioForm.value).subscribe(data => {
-        console.log(data)
+        if (environment.production) {
+          console.log(data)
+        }
         Swal.fire({
           icon: 'success',
           title: `Servicio registrado correctamente.`,
@@ -58,8 +61,8 @@ export class RegistrarServicioComponent implements OnInit {
     }
   }
 
-  private obtenerServicios(){
-    this.servicioService.consultarCategorias().subscribe((categorias)=>{
+  private obtenerServicios() {
+    this.servicioService.consultarCategorias().subscribe((categorias) => {
       this.categorias = categorias;
     })
   }
