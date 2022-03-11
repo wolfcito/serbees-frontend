@@ -10,7 +10,7 @@ export class RegistrarServicioComponent implements OnInit {
 
   servicioForm: FormGroup;
 
-  private miIdProveedor: number = -1;  
+  private miIdProveedor: number = 1;  
   
   constructor() { }
 
