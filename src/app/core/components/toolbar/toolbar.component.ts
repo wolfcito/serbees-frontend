@@ -3,12 +3,13 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-toolbar',
   templateUrl: 'toolbar.component.html',
-  styles: [`:host {
-    background-color: #106cc8;
+  styles: [`
+  :host {
+    /* background-color: #673ab7; */
     color: rgba(255, 255, 255, 0.87);
-    display: block;
+    /* display: block; */
     height: 48px;
-    padding: 0 16px;
+    /* padding: 0 16px; */
   }
 
   h1 {

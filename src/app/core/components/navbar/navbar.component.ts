@@ -8,7 +8,7 @@ import { MenuItem } from '@core/modelo/menu-item';
     border: 0 solid #e1e1e1;
     border-bottom-width: 1px;
     display: block;
-    height: 48px;
+    /* height: 48px; */
     padding: 0 16px;
   }
 
@@ -16,7 +16,7 @@ import { MenuItem } from '@core/modelo/menu-item';
     color: #8f8f8f;
     font-size: 14px;
     font-weight: 500;
-    line-height: 48px;
+    line-height: 30px;
     margin-right: 20px;
     text-decoration: none;
     vertical-align: middle;
