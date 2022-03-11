@@ -1,6 +1,6 @@
 {
-  "/prospectos-vida": {
-    "target": "http://192.168.1.115:9002",
+  "/servbees-usuario/*": {
+    "target": "http://localhost:8080",
     "logLevel": "debug"
   }
 
