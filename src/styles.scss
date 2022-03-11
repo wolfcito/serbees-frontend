@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 @import "assets/scss/modules/var";
 @import "assets/scss/modules/mixins";
 @import "assets/scss/modules/utility";
@@ -7,3 +8,14 @@
 @import "assets/scss/partials/grids";
 @import "assets/scss/partials/global";
 @import "assets/scss/partials/buttons";
+
+
+html, 
+body { 
+    height: 100%; 
+}
+body { 
+    margin: 0; 
+}
+html, body { height: 100%; }
+body { margin: 0; }
