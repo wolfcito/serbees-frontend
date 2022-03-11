@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Categoria } from '@servicio/shared/model/categorias';
+import { ServicioService } from '@servicio/shared/service/servicio.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registrar-servicio',
@@ -9,40 +12,56 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class RegistrarServicioComponent implements OnInit {
 
   servicioForm: FormGroup;
-
+  categorias: Categoria[] = [];
   private miIdProveedor: number = 1;  
+  status: 'Cargando...' | 'Error' | 'Exitoso' | 'Inicial' = 'Inicial';
+  valorInvalido: string = 'El item seleccionado es invalido';
   
-  constructor() { }
+  constructor(protected servicioService: ServicioService) { }
 
   ngOnInit(): void {
     this.construirFormularioServicio();
+    this.obtenerServicios();
   }
 
   private construirFormularioServicio() {
     this.servicioForm = new FormGroup({
-      idCategoria: new FormControl(1, [Validators.required]),
+      idCategoria: new FormControl(-1, [Validators.required]),
       idUsuarioPro: new FormControl(this.miIdProveedor, [Validators.required])
     });
   }
 
   registrar() {   
-    console.log("test") 
-    // this.servicioService.registrar(this.servicioForm.value).subscribe(data => {
-    //   console.log(data)
-    //   Swal.fire({
-    //     icon: 'success',
-    //     title: `Servcico registrado correctamente.`,
-    //     showConfirmButton: false,
-    //     timer: 1500
-    //   })
-    // }, response => {
-    //   this.status = 'Error';
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'Oops...',
-    //     text: response.error.mensaje,
-    //   })
-    // });
+    if(this.servicioForm.invalid){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: this.valorInvalido,
+      })
+    } else{
+      this.servicioService.registrar(this.servicioForm.value).subscribe(data => {
+        console.log(data)
+        Swal.fire({
+          icon: 'success',
+          title: `Servicio registrado correctamente.`,
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }, response => {
+        this.status = 'Error';
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.error.mensaje,
+        })
+      });
+    }
+  }
+
+  private obtenerServicios(){
+    this.servicioService.consultarCategorias().subscribe((categorias)=>{
+      this.categorias = categorias;
+    })
   }
 
 }
