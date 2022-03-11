@@ -1,0 +1,26 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Servicio</th>
+      <th scope="col">Usuario</th>
+      <th scope="col">Costo</th>
+      <th scope="col">Cantidad</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let country of countries; index as i">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>
+        <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
+        {{ country.name }}
+      </td>
+      <td>{{ country.area | number }}</td>
+      <td>{{ country.population | number }}</td>
+      <td>{{ country.population | number }}</td>
+      <td><button (click)="calificar(country)" class="btn btn-primary">Calificar</button></td>
+
+    </tr>
+  </tbody>
+</table>
