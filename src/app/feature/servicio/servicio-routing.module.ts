@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ReservarServicioComponent } from './components/reservar-servicio/reservar-servicio.component';
 import { ServicioComponent } from './components/servicio/servicio.component';
 
 const routes: Routes = [
@@ -9,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: 'registrar',
-        component: ServicioComponent
+        component: ReservarServicioComponent
       },
       {
         path: 'calificar',

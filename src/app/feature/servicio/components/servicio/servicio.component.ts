@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ServicioComponent implements OnInit {
 
+  experienciaValida: boolean = true;
   constructor() { }
 
   ngOnInit(): void {
