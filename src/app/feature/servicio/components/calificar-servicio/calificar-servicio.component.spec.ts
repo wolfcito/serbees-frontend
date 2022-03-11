@@ -27,4 +27,8 @@ describe('CalificarServicioComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('formulario es invalido cuando esta vacio', () => {
+    expect(component.miIdCliente).toBe(1);
+  });
 });

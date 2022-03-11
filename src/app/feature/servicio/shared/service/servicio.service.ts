@@ -8,6 +8,7 @@ import { PreReservaServicio } from '../model/pre-reserva-servicio';
 import { RegistroReserva } from '../model/registro-reserva';
 import { RegistroUsuario } from '../model/registro-usuario';
 import { ReservaUsuario } from '../model/reservar-usuario';
+import { Usuario } from '../model/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,9 @@ export class ServicioService {
   public calificar(calificaionServicio: CalificaServicio) {
     return this.http.doPost<CalificaServicio, boolean>(`${environment.endpoint}/servicios/${calificaionServicio.id}/calificar`, calificaionServicio,
       this.http.optsName('calificar servicio'));
+  }
+  public login(usuario: Usuario) {
+    return this.http.doPost<Usuario, any>(`${environment.endpoint}/usuarios/login`, usuario,
+      this.http.optsName('login servicio'));
   }
 }

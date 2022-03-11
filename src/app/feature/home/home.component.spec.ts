@@ -1,4 +1,7 @@
+import { HttpClientModule } from '@angular/common/http';
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpService } from '@core/services/http.service';
+import { ServicioService } from '@servicio/shared/service/servicio.service';
 
 import { HomeComponent } from './home.component';
 
@@ -8,7 +11,9 @@ describe('HomeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomeComponent ]
+      declarations: [ HomeComponent ],
+      imports: [HttpClientModule],
+      providers: [ServicioService, HttpService]
     })
     .compileComponents();
   }));
