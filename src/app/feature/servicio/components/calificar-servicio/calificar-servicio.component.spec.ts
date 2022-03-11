@@ -1,4 +1,7 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpService } from '@core/services/http.service';
+import { ServicioService } from '@servicio/shared/service/servicio.service';
 
 import { CalificarServicioComponent } from './calificar-servicio.component';
 
@@ -8,7 +11,9 @@ describe('CalificarServicioComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CalificarServicioComponent ]
+      declarations: [ CalificarServicioComponent ],
+      imports: [HttpClientModule],
+      providers: [ServicioService, HttpService]
     })
     .compileComponents();
   });
