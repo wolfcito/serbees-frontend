@@ -1,0 +1,29 @@
+<div class="card text-center">
+    <div class="card-header">
+        Registrar Servicio
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Selecciona un servicio</h5>
+        <form [formGroup]="servicioForm" (ngSubmit)="registrar()">
+            <div class="mb-3 row justify-content-md-center">
+                <div class="col-6 col-md-4">.</div>
+                <div class="col-6 col-md-4">
+                    <select validar class="form-select" aria-label="Default select example" id="idCategoria"
+                        class="form-control" formControlName="idCategoria" name="idCategoria">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-4"></div>
+
+            </div>
+        </form>
+    </div>
+    <div class="card-footer text-muted">
+        <div class="centrado">
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </div>
+    </div>
+</div>
