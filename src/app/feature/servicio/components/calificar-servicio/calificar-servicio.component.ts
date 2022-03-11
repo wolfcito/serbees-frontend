@@ -1,39 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { CalificaServicio } from '@servicio/shared/model/calificar-servicio';
+import { RegistroReserva } from '@servicio/shared/model/registro-reserva';
+import { ServicioService } from '@servicio/shared/service/servicio.service';
+import Swal from 'sweetalert2';
 
-interface Country {
-  name: string;
-  flag: string;
-  area: number;
-  population: number;
-}
-
-const COUNTRIES: Country[] = [
-  {
-    name: 'Russia',
-    flag: 'f/f3/Flag_of_Russia.svg',
-    area: 17075200,
-    population: 146989754
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-  {
-    name: 'United States',
-    flag: 'a/a4/Flag_of_the_United_States.svg',
-    area: 9629091,
-    population: 324459463
-  },
-  {
-    name: 'China',
-    flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-    area: 9596960,
-    population: 1409517397
-  }
-];
+import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-calificar-servicio',
@@ -42,15 +15,85 @@ const COUNTRIES: Country[] = [
 })
 export class CalificarServicioComponent implements OnInit {
 
-  countries = COUNTRIES;
+  nivelSatisfaccion: string;
+  displayedColumns: string[] = ['col1', 'col2', 'col3', 'col4'];
+  status: 'Cargando...' | 'Error' | 'Exitoso' | 'Inicial' = 'Inicial';
+  todasMisReservas: RegistroReserva[] = [];
+  estado: string = 'C';
+  miIdCliente: number = 1;
 
-  constructor() { }
+  closeResult = null;
+  currentRate: number = 2;
+
+  calificaionServicio: CalificaServicio
+
+  constructor(protected servicioService: ServicioService,
+    config: NgbRatingConfig,
+    private modalService: NgbModal) {
+
+    config.max = 3;
+  }
 
   ngOnInit(): void {
+    this.obtenerServiciosReservados(this.miIdCliente);
   }
 
-  calificar(servicioSeleccionado: Country) {
-    console.log(servicioSeleccionado)
+  calificar(calificaionServicio: CalificaServicio) {
+
+    this.servicioService.calificar(calificaionServicio).subscribe(data => {
+      console.log("respuesta", data)
+      this.obtenerServiciosReservados(this.miIdCliente);
+      Swal.fire({
+        icon: 'success',
+        title: `Servicio calificado correctamente.`,
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }, response => {
+      this.status = 'Error';
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: response.error.mensaje,
+      })
+    });
+
   }
-  
+
+  private obtenerServiciosReservados(miIdCliente) {
+    this.servicioService.consultarMisReservas(miIdCliente).subscribe((todasMisReservas) => {
+      this.todasMisReservas = todasMisReservas;
+    })
+  }
+
+  open(content) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then((result) => {
+        console.log("close ", result)
+        this.calificaionServicio = {
+          id: result.idReserva,
+          nivelSatisfacion: this.obtenerValorSatisfacion(),
+          estado: this.estado
+        }
+        console.log("final ", this.calificaionServicio)
+        this.calificar(this.calificaionServicio);
+
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  private obtenerValorSatisfacion() {
+    return this.currentRate == 1 ? 'INF' : this.currentRate == 2 ? 'NOR' : this.currentRate == 3 ? 'SUP' : '';
+  }
 }

@@ -1,26 +1,35 @@
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Servicio</th>
-      <th scope="col">Usuario</th>
-      <th scope="col">Costo</th>
-      <th scope="col">Cantidad</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let country of countries; index as i">
-      <th scope="row">{{ i + 1 }}</th>
-      <td>
-        <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-        {{ country.name }}
-      </td>
-      <td>{{ country.area | number }}</td>
-      <td>{{ country.population | number }}</td>
-      <td>{{ country.population | number }}</td>
-      <td><button (click)="reservar(country)" class="btn btn-primary">Reservar</button></td>
 
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Servicio</th>
+        <th scope="col">Usuario</th>
+        <th scope="col">Costo</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let servicioDisponible of todosServicios; index as i">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>
+            {{ servicioDisponible.nombreCategoria }}
+          </td>
+          <td>{{ servicioDisponible.nombreUsuario }}</td>
+          
+          <td>
+              <select id="costo" class="form-select form-control" aria-label="selecto categoria servicio" [(ngModel)]="costoTipo" required>
+                <option value="{{servicioDisponible.costoHora}}-PH">{{servicioDisponible.costoHora | currency}} - POR HORA</option>
+                <option value="{{servicioDisponible.costoDia}}-PD">{{servicioDisponible.costoDia | currency}} - POR DIA</option>
+                <option value="{{servicioDisponible.costoSemana}}-PS">{{servicioDisponible.costoSemana | currency}} - POR SEMANA</option>
+              </select>
+            </td>
+            <td><input type="number" placeholder="1" value="1" min="1" step="1" class="form-control"></td>
+            <td><button (click)="reservar(servicioDisponible)" class="btn btn-primary">Reservar</button></td>
+      
     </tr>
   </tbody>
 </table>
+
+{{costoTipo}}

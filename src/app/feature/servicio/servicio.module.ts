@@ -7,6 +7,7 @@ import { SharedModule } from '@shared/shared.module';
 import { ReservarServicioComponent } from './components/reservar-servicio/reservar-servicio.component';
 import { RegistrarServicioComponent } from './components/registrar-servicio/registrar-servicio.component';
 import { CalificarServicioComponent } from './components/calificar-servicio/calificar-servicio.component';
+import { ValorServicioPipe } from '@shared/pipe/valor-servicio.pipe';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { CalificarServicioComponent } from './components/calificar-servicio/cali
     CommonModule,
     ServicioRoutingModule,
     SharedModule
-  ]
+  ],
+  providers:[ValorServicioPipe]
 })
 export class ServicioModule { }

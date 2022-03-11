@@ -2,24 +2,39 @@
   <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col">Empleado</th>
       <th scope="col">Servicio</th>
-      <th scope="col">Usuario</th>
-      <th scope="col">Costo</th>
-      <th scope="col">Cantidad</th>
+      <th scope="col">Costo final</th>
       <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let country of countries; index as i">
+    <tr *ngFor="let miReserva of todasMisReservas; index as i">
       <th scope="row">{{ i + 1 }}</th>
       <td>
-        <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-        {{ country.name }}
+        {{ miReserva.nombreUsuario }}
       </td>
-      <td>{{ country.area | number }}</td>
-      <td>{{ country.population | number }}</td>
-      <td>{{ country.population | number }}</td>
-      <td><button (click)="calificar(country)" class="btn btn-primary">Calificar</button></td>
+      <td>{{ miReserva.nombreCategoria }}</td>
+      <td>{{miReserva.costo * miReserva.cantidad | currency}}</td>
+      <td><button (click)="open(content)" class="btn btn-primary">Calificar</button></td>
+
+      <ng-template #content let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Te ha gustado el servicio? </h4>
+          <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+          <form class="d-flex flex-column">
+            <div class="mb-3 estrellas justify-content-center">
+              <ngb-rating [(rate)]="currentRate" ></ngb-rating>
+            </div>
+            <p>{{currentRate | valorServicio}}</p>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close(miReserva)">Guardar</button>
+        </div>
+      </ng-template>
 
     </tr>
   </tbody>

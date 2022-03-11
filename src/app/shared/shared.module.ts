@@ -7,6 +7,8 @@ import { MensajeErrorCamposContenedorDirective } from './directivas/error-campos
 import { ErrorCamposPlantillaComponent } from './directivas/error-campos/componente/error-campos-plantilla.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TrackByPipe } from './pipe/track-by.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ValorServicioPipe } from './pipe/valor-servicio.pipe';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,8 @@ import { TrackByPipe } from './pipe/track-by.pipe';
     MensajeErrorCamposDirective,
     MensajeErrorCamposContenedorDirective,
     MensajeErrorCamposSubmitDirective,
-    TrackByPipe
+    TrackByPipe,
+    ValorServicioPipe
   ],
   imports: [ReactiveFormsModule, FormsModule],
   exports: [
@@ -25,7 +28,9 @@ import { TrackByPipe } from './pipe/track-by.pipe';
     MensajeErrorCamposSubmitDirective,
     ReactiveFormsModule,
     FormsModule,
-    TrackByPipe
+    TrackByPipe,
+    NgbModule,
+    ValorServicioPipe
   ]
 })
 export class SharedModule { }
